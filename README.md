@@ -9,6 +9,7 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 | Version | Tag | Upstream commit |
 |---------|-----|-----------------|
 | v3.20 | [`v3.20`](https://github.com/chainguard-actions/action-tmate/tree/v3.20) | — |
+| v3.22 | [`v3.22`](https://github.com/chainguard-actions/action-tmate/tree/v3.22) | — |
 | v3.23 | [`v3.23`](https://github.com/chainguard-actions/action-tmate/tree/v3.23) | — |
 
 ## Privacy
