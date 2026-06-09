@@ -11,6 +11,7 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 | v3.20 | [`v3.20`](https://github.com/chainguard-actions/mxschmitt-action-tmate/tree/v3.20) | — |
 | v3.22 | [`v3.22`](https://github.com/chainguard-actions/mxschmitt-action-tmate/tree/v3.22) | — |
 | v3.23 | [`v3.23`](https://github.com/chainguard-actions/mxschmitt-action-tmate/tree/v3.23) | — |
+| v3.24 | [`v3.24`](https://github.com/chainguard-actions/mxschmitt-action-tmate/tree/v3.24) | [`35b54af`](https://github.com/mxschmitt/action-tmate/commit/35b54afac29c97fb54faba5b513f8fbd1882f113) |
 
 ## Privacy
 
