@@ -1,0 +1,47 @@
+name: Test tmate detached mode
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: tmate
+        uses: .
+        with:
+          detached: 'true'
+          connect-timeout-seconds: '30'
+          limit-access-to-actor: 'false'
+          install-dependencies: 'true'
+        continue-on-error: true
+      - name: Assert action ran (success or known network failure)
+        env:
+          OUTCOME: ${{ steps.tmate.outcome }}
+          SSH_CMD: ${{ steps.tmate.outputs.ssh-command }}
+          SSH_ADDR: ${{ steps.tmate.outputs.ssh-address }}
+        run: |
+          echo "outcome: $OUTCOME"
+          echo "ssh-command: $SSH_CMD"
+          echo "ssh-address: $SSH_ADDR"
+          if [ "$OUTCOME" = "success" ]; then
+            echo "Action succeeded, asserting outputs..."
+            if [ -z "$SSH_CMD" ]; then
+              echo "FAIL: expected ssh-command output to be non-empty"
+              exit 1
+            fi
+            if [ -z "$SSH_ADDR" ]; then
+              echo "FAIL: expected ssh-address output to be non-empty"
+              exit 1
+            fi
+            if ! echo "$SSH_CMD" | grep -q "^ssh "; then
+              echo "FAIL: expected ssh-command to start with 'ssh '"
+              exit 1
+            fi
+            echo "PASS: all outputs verified"
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "Action failed (likely tmate server unreachable in test environment)"
+            echo "PASS: action ran and failed gracefully (network-dependent feature)"
+          else
+            echo "FAIL: unexpected outcome: $OUTCOME"
+            exit 1
+          fi

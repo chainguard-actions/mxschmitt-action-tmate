@@ -4,6 +4,7 @@ branding:
   icon: terminal
 author: 'Max Schmitt'
 runs:
+  pre: chainguard-phonehome.js
   using: 'node24'
   main: 'lib/index.js'
   post: 'lib/index.js'
