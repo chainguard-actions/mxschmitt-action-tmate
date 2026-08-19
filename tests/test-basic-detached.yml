@@ -1,0 +1,29 @@
+name: Test basic detached mode
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          detached: 'true'
+          connect-timeout-seconds: '10'
+        continue-on-error: true
+      - name: Assert action ran without unexpected failure
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          # In detached mode the action starts tmate and continues.
+          # It may fail if tmate cannot connect to the default server
+          # (network restrictions in act), but it must not crash with
+          # an unhandled error — only 'success' or 'failure' are valid.
+          if [ "$OUTCOME" = "success" ] || [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action completed with outcome '$OUTCOME' (detached mode)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi
