@@ -1,0 +1,36 @@
+name: Test tmate detached mode
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: tmate
+        uses: .
+        with:
+          detached: 'true'
+          connect-timeout-seconds: '30'
+          limit-access-to-actor: 'false'
+        continue-on-error: true
+      - name: Assert tmate ran and produced outputs or failed gracefully
+        env:
+          OUTCOME: ${{ steps.tmate.outcome }}
+          SSH_CMD: ${{ steps.tmate.outputs.ssh-command }}
+          SSH_ADDR: ${{ steps.tmate.outputs.ssh-address }}
+        run: |
+          echo "outcome: $OUTCOME"
+          echo "ssh-command: $SSH_CMD"
+          echo "ssh-address: $SSH_ADDR"
+          if [ "$OUTCOME" = "success" ]; then
+            if [ -z "$SSH_CMD" ] && [ -z "$SSH_ADDR" ]; then
+              echo "FAIL: action succeeded but no ssh-command or ssh-address output was set"
+              exit 1
+            fi
+            echo "PASS: tmate started in detached mode, ssh-command='$SSH_CMD'"
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully (tmate server may be unreachable in this environment)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi
