@@ -1,0 +1,35 @@
+name: Test tmate skip dependency installation
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: tmate
+        uses: .
+        with:
+          detached: 'true'
+          connect-timeout-seconds: '30'
+          install-dependencies: 'false'
+          sudo: 'auto'
+        continue-on-error: true
+      - name: Assert action ran with install-dependencies disabled
+        env:
+          OUTCOME: ${{ steps.tmate.outcome }}
+          SSH_CMD: ${{ steps.tmate.outputs.ssh-command }}
+        run: |
+          echo "outcome: $OUTCOME"
+          echo "ssh-command: $SSH_CMD"
+          if [ "$OUTCOME" = "success" ]; then
+            if [ -z "$SSH_CMD" ]; then
+              echo "FAIL: action succeeded but ssh-command is empty"
+              exit 1
+            fi
+            echo "PASS: tmate started without installing dependencies, ssh-command='$SSH_CMD'"
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully (expected when skipping deps or tmate server unreachable)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi

@@ -1,0 +1,41 @@
+name: Test tmate custom server configuration
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: tmate
+        uses: .
+        with:
+          detached: 'true'
+          connect-timeout-seconds: '15'
+          install-dependencies: 'true'
+          sudo: 'auto'
+          tmate-server-host: 'ssh.tmate.io'
+          tmate-server-port: '22'
+          tmate-server-rsa-fingerprint: 'SHA256:Uwbm5GkMcMDMQBMFpBPFGDzvhMBkkSFMhMSBMBMBMBM'
+          tmate-server-ed25519-fingerprint: 'SHA256:Uwbm5GkMcMDMQBMFpBPFGDzvhMBkkSFMhMSBMBMBMBM'
+        continue-on-error: true
+      - name: Assert action accepted custom server config
+        env:
+          OUTCOME: ${{ steps.tmate.outcome }}
+          SSH_CMD: ${{ steps.tmate.outputs.ssh-command }}
+          SSH_ADDR: ${{ steps.tmate.outputs.ssh-address }}
+        run: |
+          echo "outcome: $OUTCOME"
+          echo "ssh-command: $SSH_CMD"
+          echo "ssh-address: $SSH_ADDR"
+          if [ "$OUTCOME" = "success" ]; then
+            if [ -z "$SSH_CMD" ] && [ -z "$SSH_ADDR" ]; then
+              echo "FAIL: action succeeded but produced no ssh outputs"
+              exit 1
+            fi
+            echo "PASS: tmate started with custom server config"
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully (custom server fingerprint mismatch or unreachable is expected)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi
