@@ -2,6 +2,7 @@
   "owner": "mxschmitt",
   "repo": "action-tmate",
   "version": "v3.24",
+  "path": "detached",
   "commit_sha": "35b54afac29c97fb54faba5b513f8fbd1882f113",
   "url": "https://github.com/mxschmitt/action-tmate",
   "policy_sha": "d636be7e43ef829af6e853da6b3c7566db9f72fe",
