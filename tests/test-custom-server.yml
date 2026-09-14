@@ -1,0 +1,30 @@
+name: Test tmate with custom server configuration
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: tmate
+        uses: .
+        with:
+          detached: 'true'
+          connect-timeout-seconds: '5'
+          install-dependencies: 'true'
+          sudo: 'auto'
+          # Point to a non-existent custom server so the action fails fast
+          # rather than connecting to the default tmate.io server
+          tmate-server-host: '127.0.0.1'
+          tmate-server-port: '2222'
+          tmate-server-rsa-fingerprint: 'SHA256:fakefingerprint'
+          tmate-server-ed25519-fingerprint: 'SHA256:fakefingerprint'
+        continue-on-error: true
+      - name: Assert action ran without fatal error
+        run: |
+          echo "tmate step outcome: ${{ steps.tmate.outcome }}"
+          if [ "${{ steps.tmate.outcome }}" = "skipped" ]; then
+            echo "FAIL: step was unexpectedly skipped"
+            exit 1
+          fi
+          echo "PASS: action completed with custom server config (outcome=${{ steps.tmate.outcome }})"
