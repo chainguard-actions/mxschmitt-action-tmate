@@ -1,7 +1,0 @@
-{
-  "owner": "mxschmitt",
-  "name": "action-tmate",
-  "visibility": "public",
-  "description": "Debug your GitHub Actions Environment interactively by using SSH or a Web shell",
-  "block_publish": false
-}
