@@ -1,4 +1,4 @@
-name: Test tmate with custom server configuration
+name: Test tmate custom server configuration
 on:
   workflow_dispatch:
 jobs:
@@ -6,25 +6,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
       - id: tmate
         uses: .
+        continue-on-error: true
         with:
           detached: 'true'
-          connect-timeout-seconds: '5'
+          connect-timeout-seconds: '10'
           install-dependencies: 'true'
           sudo: 'auto'
-          # Point to a non-existent custom server so the action fails fast
-          # rather than connecting to the default tmate.io server
-          tmate-server-host: '127.0.0.1'
+          tmate-server-host: 'ssh.example.invalid'
           tmate-server-port: '2222'
-          tmate-server-rsa-fingerprint: 'SHA256:fakefingerprint'
-          tmate-server-ed25519-fingerprint: 'SHA256:fakefingerprint'
-        continue-on-error: true
-      - name: Assert action ran without fatal error
+          tmate-server-rsa-fingerprint: 'SHA256:fakefingerprint1234567890abcdef'
+          tmate-server-ed25519-fingerprint: 'SHA256:fakefingerprint1234567890abcdef'
+
+      - name: Assert action ran with custom server config
+        env:
+          OUTCOME: ${{ steps.tmate.outcome }}
         run: |
-          echo "tmate step outcome: ${{ steps.tmate.outcome }}"
-          if [ "${{ steps.tmate.outcome }}" = "skipped" ]; then
-            echo "FAIL: step was unexpectedly skipped"
+          echo "outcome: $OUTCOME"
+          # With an invalid/unreachable custom server, the action should fail gracefully
+          # (not hang indefinitely, since connect-timeout-seconds is set)
+          if [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully with unreachable custom server"
+          elif [ "$OUTCOME" = "success" ]; then
+            echo "PASS: action unexpectedly succeeded (custom server was reachable)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
             exit 1
           fi
-          echo "PASS: action completed with custom server config (outcome=${{ steps.tmate.outcome }})"

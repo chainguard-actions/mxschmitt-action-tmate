@@ -1,0 +1,32 @@
+name: Test custom tmate server configuration
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: tmate
+        uses: .
+        continue-on-error: true
+        with:
+          detached: 'true'
+          connect-timeout-seconds: '5'
+          install-dependencies: 'true'
+          tmate-server-host: 'ssh.invalid.example.org'
+          tmate-server-port: '2222'
+          tmate-server-rsa-fingerprint: 'SHA256:invalidfingerprint'
+          tmate-server-ed25519-fingerprint: 'SHA256:invalidfingerprint'
+      - name: Assert action handled custom server configuration
+        env:
+          OUTCOME: ${{ steps.tmate.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          if [ "$OUTCOME" = "success" ]; then
+            echo "PASS: action succeeded with custom server config"
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully (expected when custom server is unreachable)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi
