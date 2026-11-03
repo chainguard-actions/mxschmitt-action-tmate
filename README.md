@@ -8,10 +8,10 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 
 | Version | Tag | Upstream commit | Hardening report |
 |---------|-----|-----------------|------------------|
-| v3.20 | [`v3.20`](https://github.com/chainguard-actions/mxschmitt-action-tmate/tree/v3.20) | [`c6f0481`](https://github.com/mxschmitt/action-tmate/commit/c6f0481d0648e44da05d377e11809430c8685366) | [`HARDENING.md`](https://github.com/chainguard-actions/mxschmitt-action-tmate/blob/v3.20/HARDENING.md) |
-| v3.21 | [`v3.21`](https://github.com/chainguard-actions/mxschmitt-action-tmate/tree/v3.21) | [`c606f86`](https://github.com/mxschmitt/action-tmate/commit/c606f8612a802e46b3742322514c09fbc8c4afee) | [`HARDENING.md`](https://github.com/chainguard-actions/mxschmitt-action-tmate/blob/v3.21/HARDENING.md) |
-| v3.22 | [`v3.22`](https://github.com/chainguard-actions/mxschmitt-action-tmate/tree/v3.22) | [`7b6a61a`](https://github.com/mxschmitt/action-tmate/commit/7b6a61a73bbb9793cb80ad69b8dd8ac19261834c) | [`HARDENING.md`](https://github.com/chainguard-actions/mxschmitt-action-tmate/blob/v3.22/HARDENING.md) |
-| v3.23 | [`v3.23`](https://github.com/chainguard-actions/mxschmitt-action-tmate/tree/v3.23) | [`c0afd6f`](https://github.com/mxschmitt/action-tmate/commit/c0afd6f790e3a5564914980036ebf83216678101) | [`HARDENING.md`](https://github.com/chainguard-actions/mxschmitt-action-tmate/blob/v3.23/HARDENING.md) |
+| v3.20 | [`v3.20`](https://github.com/chainguard-actions/mxschmitt-action-tmate/tree/v3.20) | [`c6f0481`](https://github.com/mxschmitt/action-tmate/commit/c6f0481d0648e44da05d377e11809430c8685366) | — |
+| v3.21 | [`v3.21`](https://github.com/chainguard-actions/mxschmitt-action-tmate/tree/v3.21) | [`c606f86`](https://github.com/mxschmitt/action-tmate/commit/c606f8612a802e46b3742322514c09fbc8c4afee) | — |
+| v3.22 | [`v3.22`](https://github.com/chainguard-actions/mxschmitt-action-tmate/tree/v3.22) | [`7b6a61a`](https://github.com/mxschmitt/action-tmate/commit/7b6a61a73bbb9793cb80ad69b8dd8ac19261834c) | — |
+| v3.23 | [`v3.23`](https://github.com/chainguard-actions/mxschmitt-action-tmate/tree/v3.23) | [`c0afd6f`](https://github.com/mxschmitt/action-tmate/commit/c0afd6f790e3a5564914980036ebf83216678101) | — |
 | v3.24 | [`v3.24`](https://github.com/chainguard-actions/mxschmitt-action-tmate/tree/v3.24) | [`35b54af`](https://github.com/mxschmitt/action-tmate/commit/35b54afac29c97fb54faba5b513f8fbd1882f113) | [`HARDENING.md`](https://github.com/chainguard-actions/mxschmitt-action-tmate/blob/v3.24/HARDENING.md), [`detached`](https://github.com/chainguard-actions/mxschmitt-action-tmate/blob/v3.24/detached/HARDENING.md) |
 
 ## Privacy
